@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">MediaMetrics</string>
+
+    <string name="title_activity_activity__add_channel">Add channel</string>
+    <string name="title_activity_scrolling">ScrollingActivity</string>
+    <string name="main_button_add">+</string>
+
+    <string name="addChannel_buttonAddChannel">enter</string>
+    <string name="addChannel_infoAddChannel">Введите url адрес канала:</string>
+
+    <string name="serviceUpdate_resultOK">Обновленно</string>
+    <string name="serviceUpdate_resultFail">Ошибка обновления</string>
+
+    <string name="itemView_buttonUrl">Источник</string>
+    <string name="itemView_buttonFavourite">В избранное</string>
+    <string name="itemView_openUrl_ErrorUrl">Сайт не доступен</string>
+    <string name="itemView_openUrl_ErrorBrowser">Ошибка браузера</string>
+
+    <string name="serviceParsURL_infoAdd">Канал добавлен</string>
+    <string name="serviceParsURL_resultFail">Ошибка добавления</string>
+    <string name="serviceParsURL_UrlFail">Введите url адрес</string>
+    <string name="serviceParsURL_UrlIncorrect">Некорректный url адрес</string>
+    <string name="title_activity_channel_preferences">ChannelPreferences</string>
+    <string name="title_activity_activity_preferences">ActivityPreferences</string>
+
+</resources>

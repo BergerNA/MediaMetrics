@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/textViewForSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="channel title"
+        android:textSize="18sp"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        style="?android:attr/spinnerDropDownItemStyle"
+        android:ellipsize="marquee"
+        android:maxLines="1" />
+
+</LinearLayout>
