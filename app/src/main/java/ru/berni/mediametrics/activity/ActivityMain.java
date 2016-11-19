@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 
@@ -35,6 +36,8 @@ public class ActivityMain extends Activity {
     private ExchangeServices exchange;
     private boolean exchangeConnect = false;
 
+    private Channel selectChannel = null;
+
     private RssUpdateListener channelListener = new RssUpdateListener(RssUpdateListener.EntityType.CHANNEL) {
         @Override
         public void onUpdate() {
@@ -50,6 +53,15 @@ public class ActivityMain extends Activity {
         }
     };
 
+    private ExchangeListener eventUpdate = new ExchangeListener() {
+        @Override
+        public void onUpdate() {
+            if(exchange != null && selectChannel != null){
+                exchange.getChannelItems(selectChannel);
+            }
+        }
+    };
+
     private ServiceConnection connection = new ServiceConnection() {
         @Override
         public void onServiceConnected(final ComponentName componentName, final IBinder binder) {
@@ -57,8 +69,8 @@ public class ActivityMain extends Activity {
             exchange = exchangeBinder.getMainServices();
             exchangeConnect = true;
 
-            exchange.setListener(channelListener);
-            exchange.setListener(itemListener);
+            exchange.setRssListener(channelListener);
+            exchange.setRssListener(itemListener);
             if (exchange.listItemIsEmpty()) {
                 exchange.getAllItems();
             } else {
@@ -81,8 +93,28 @@ public class ActivityMain extends Activity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        spinnerChannel = (Spinner) findViewById(R.id.spinnerTheme);
-        listViewItem = (ListView) findViewById(R.id.listView);
+
+        final Button buttonAddChannel = (Button) findViewById(R.id.mainActivity_button_add);
+        buttonAddChannel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                final Intent intent = new Intent(getApplicationContext(), ActivityAddChannel.class);
+                startActivity(intent);
+            }
+        });
+
+        final Button buttonUpdateChannel = (Button) findViewById(R.id.mainActivity_button_update);
+        buttonUpdateChannel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                if (exchange != null) {
+                    exchange.updateChannel();
+                }
+            }
+        });
+
+        spinnerChannel = (Spinner) findViewById(R.id.mainActivity_spinner_channel);
+        listViewItem = (ListView) findViewById(R.id.mainActivity_listView_item);
         setChannelViewChannelAdapter();
         setItemViewItemAdapter();
     }
@@ -93,8 +125,9 @@ public class ActivityMain extends Activity {
         final Intent intent = new Intent(this, ExchangeServices.class);
         bindService(intent, connection, Context.BIND_AUTO_CREATE);
         if (exchange != null) {
-            exchange.setListener(channelListener);
-            exchange.setListener(itemListener);
+            exchange.setRssListener(channelListener);
+            exchange.setRssListener(itemListener);
+            exchange.setExchangeListener(eventUpdate);
         }
     }
 
@@ -104,6 +137,7 @@ public class ActivityMain extends Activity {
         if (exchange != null) {
             exchange.delListener(channelListener);
             exchange.delListener(itemListener);
+            exchange.delExchangeListener(eventUpdate);
         }
         if (exchangeConnect) {
             unbindService(connection);
@@ -121,16 +155,7 @@ public class ActivityMain extends Activity {
         listItem = exchange.getItemList();
         adapterItems.clear();
         adapterItems.addAll(listItem);
-    }
-
-    public void buttonAddChannel_onClick(final View view) {
-        final Intent intent = new Intent(getApplicationContext(), ActivityAddChannel.class);
-        startActivity(intent);
-    }
-
-    public void buttonUpdate_onClick(final View view) {
-        if (exchange != null)
-            exchange.updateChannel();
+        adapterItems.notifyDataSetChanged();
     }
 
     private void setItemViewItemAdapter() {
@@ -140,7 +165,7 @@ public class ActivityMain extends Activity {
             @Override
             public void onItemClick(final AdapterView<?> adapterView, final View view, final int position, final long id) {
                 final Intent intentForItemView = new Intent(getApplicationContext(), ActivityItemView.class);
-                intentForItemView.putExtra(ActivityItemView.EXTRA_MESSAGE_ID, listItem.get(position).getId());
+                ActivityItemView.setIntentExtra(intentForItemView, listItem, listItem.get(position).getId());
                 startActivity(intentForItemView);
             }
         });
@@ -153,7 +178,8 @@ public class ActivityMain extends Activity {
         spinnerChannel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(final AdapterView<?> adapterView, final View view, final int position, final long id) {
-                exchange.getChannelItems(listChannel.get(position));
+                selectChannel = listChannel.get(position);
+                exchange.getChannelItems(selectChannel);
             }
 
             @Override

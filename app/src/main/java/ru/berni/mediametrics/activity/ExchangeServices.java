@@ -22,11 +22,13 @@ public class ExchangeServices extends Service {
     static ArrayList<Channel> listChannel = new ArrayList<>();
     private static ArrayList<Item> listItem = new ArrayList<>();
 
+    static ArrayList<ExchangeListener> listListener = new ArrayList<>();
+
     private final IBinder binder = new ExchangeBinders();
 
     private final int NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors();
 
-    private final static ArrayList<RssUpdateListener> listListener = new ArrayList<>();
+    private final static ArrayList<RssUpdateListener> listRssListener = new ArrayList<>();
 
     class ExchangeBinders extends Binder {
         ExchangeServices getMainServices() {
@@ -34,7 +36,7 @@ public class ExchangeServices extends Service {
         }
     }
 
-    private static Handler handler;
+    static Handler handler;
     private ThreadPoolExecutor executor;
 
     @Override
@@ -72,16 +74,22 @@ public class ExchangeServices extends Service {
         }
     }
 
+    static Channel selectChannel = null;
     void getChannelItems(final Channel channel) {
+        selectChannel = channel;
         if (channel == null || channel.getUrl() == null) {
             return;
         }
         executor.execute(new Runnable() {
             @Override
             public void run() {
-                final DatabaseHelper databaseHelper = DatabaseHelper.getInstance(getApplicationContext());
-                listItem = databaseHelper.getItem(channel);
-                sendMessageItemListeners();
+                try {
+                    final DatabaseHelper databaseHelper = DatabaseHelper.getInstance(getApplicationContext());
+                    listItem = databaseHelper.getItem(channel);
+                    sendMessageItemListeners();
+                } catch (final Throwable exc){
+                    exc.printStackTrace();
+                }
             }
         });
     }
@@ -103,16 +111,25 @@ public class ExchangeServices extends Service {
         return listItem;
     }
 
-    void setListener(final RssUpdateListener listener) {
-        listListener.add(listener);
+    boolean listChannelIsEmpty() {
+        return listChannel.size() == 0;
+    }
+
+    boolean listItemIsEmpty() {
+        return listItem.size() == 0;
+    }
+
+
+    void setRssListener(final RssUpdateListener listener) {
+        listRssListener.add(listener);
     }
 
     void delListener(final RssUpdateListener listener) {
-        listListener.remove(listener);
+        listRssListener.remove(listener);
     }
 
     synchronized static void sendMessageListeners() {
-        for (final RssUpdateListener listener : listListener) {
+        for (final RssUpdateListener listener : listRssListener) {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -122,8 +139,8 @@ public class ExchangeServices extends Service {
         }
     }
 
-    private synchronized static void sendMessageItemListeners() {
-        for (final RssUpdateListener listener : listListener) {
+    synchronized static void sendMessageItemListeners() {
+        for (final RssUpdateListener listener : listRssListener) {
             if (listener.getType() == RssUpdateListener.EntityType.ITEM) {
                 handler.post(new Runnable() {
                     @Override
@@ -136,7 +153,7 @@ public class ExchangeServices extends Service {
     }
 
     synchronized static void sendMessageChannelListeners() {
-        for (final RssUpdateListener listener : listListener) {
+        for (final RssUpdateListener listener : listRssListener) {
             if (listener.getType() == RssUpdateListener.EntityType.CHANNEL) {
                 handler.post(new Runnable() {
                     @Override
@@ -148,11 +165,24 @@ public class ExchangeServices extends Service {
         }
     }
 
-    boolean listChannelIsEmpty() {
-        return listChannel.size() == 0;
+
+    void setExchangeListener(final ExchangeListener listener) {
+        listListener.add(listener);
     }
 
-    boolean listItemIsEmpty() {
-        return listItem.size() == 0;
+    void delExchangeListener(final ExchangeListener listener) {
+        listListener.remove(listener);
+    }
+
+    synchronized void sendMessageExchangeListener(){
+        for (final ExchangeListener listener: listListener){
+
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    listener.onUpdate();
+                }
+            });
+        }
     }
 }

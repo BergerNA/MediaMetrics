@@ -10,7 +10,7 @@
     tools:context=".activity.ActivityAddChannel">
 
     <TextView
-        android:id="@+id/text_addChannel"
+        android:id="@+id/add_channel_textView_infoAdd"
         android:text="@string/addChannel_infoAddChannel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -18,25 +18,23 @@
         android:paddingRight="10dp"/>
 
     <EditText
-        android:id="@+id/editText_addChannel"
+        android:id="@+id/add_channel_editText_url"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/text_addChannel"
+        android:layout_below="@+id/add_channel_textView_infoAdd"
         android:inputType="textUri" />
     <Button
-    android:id="@+id/button_addChanel"
+    android:id="@+id/add_channel_button_add"
     android:text="@string/addChannel_buttonAddChannel"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_below="@+id/editText_addChannel"
-    android:onClick="buttonAddChannel_onClick"/>
+    android:layout_below="@+id/add_channel_editText_url"/>
 
     <Button
-        android:id="@+id/button_clearDB"
+        android:id="@+id/add_channel_button_clearDB"
         android:text="ClearDB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/button_addChanel"
-        android:onClick="buttonClearDB_onClick"/>
+        android:layout_below="@+id/add_channel_button_add"/>
 
 </RelativeLayout>

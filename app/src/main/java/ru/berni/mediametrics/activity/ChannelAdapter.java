@@ -25,10 +25,10 @@ class ChannelAdapter extends ArrayAdapter<Channel>{
     public View getView(final int position, View convertView, @NonNull final ViewGroup parent) {
         final Channel channel = getItem(position);
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.row2, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.row_channel_view, parent, false);
         }
         if (channel != null) {
-            ((TextView) convertView.findViewById(R.id.textViewForSpinner)).setText(Html.fromHtml(channel.getTitle()));
+            ((TextView) convertView.findViewById(R.id.spinner_textView_channel)).setText(Html.fromHtml(channel.getTitle()));
         }
         return convertView;
     }
@@ -37,11 +37,11 @@ class ChannelAdapter extends ArrayAdapter<Channel>{
     public View getDropDownView(final int position, View convertView, @NonNull final ViewGroup parent) {
         final Channel channel = getItem(position);
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.row2, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.row_channel_view, parent, false);
         }
 
         if(channel != null && channel.getTitle() != null) {
-            ((TextView) convertView.findViewById(R.id.textViewForSpinner)).setText(Html.fromHtml(channel.getTitle()));
+            ((TextView) convertView.findViewById(R.id.spinner_textView_channel)).setText(Html.fromHtml(channel.getTitle()));
         }
         return convertView;
     }

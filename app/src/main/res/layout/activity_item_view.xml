@@ -7,6 +7,7 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_view_liner_layout"
 android:layout_width="match_parent"
 android:layout_height="wrap_content"
 android:orientation="vertical"
@@ -15,7 +16,7 @@ android:orientation="vertical"
 tools:context=".activity.ActivityItemView">
 
     <TextView
-        android:id="@+id/item_title"
+        android:id="@+id/item_textView_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="5dp"
@@ -26,32 +27,33 @@ tools:context=".activity.ActivityItemView">
         />
 
     <TextView
-        android:id="@+id/item_date"
+        android:id="@+id/item_textView_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="sdffdf"
+        android:text="date"
         android:layout_gravity="right"
         android:layout_marginRight="5dp"
         android:paddingTop="10dp"
         android:textSize="14sp"/>
 
     <TextView
-        android:id="@+id/item_description"
+        android:id="@+id/item_textView_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="dsdsd"
+        android:text="description"
         android:layout_gravity="left"
         android:layout_marginLeft="5dp"
         android:paddingTop="5dp"
         android:textSize="16sp"/>
 
     <ImageView
+        android:id="@+id/item_ImageView_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="Picture" />
 
     <WebView
-        android:id="@+id/item_content"
+        android:id="@+id/item_webView_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
@@ -66,16 +68,15 @@ tools:context=".activity.ActivityItemView">
         android:layout_margin="@dimen/activity_horizontal_margin">
 
         <Button
-            android:id="@+id/item_url"
+            android:id="@+id/item_button_url"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/itemView_buttonUrl"
             android:textColor="@android:color/holo_blue_dark"
-            android:layout_margin="@dimen/activity_horizontal_margin"
-            android:onClick="buttonItemUrl_onClick"/>
+            android:layout_margin="@dimen/activity_horizontal_margin" />
 
         <Button
-            android:id="@+id/item_favourite"
+            android:id="@+id/item_button_favourite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/itemView_buttonFavourite"
@@ -83,6 +84,28 @@ tools:context=".activity.ActivityItemView">
             android:layout_margin="@dimen/activity_horizontal_margin"/>
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="@dimen/activity_horizontal_margin">
+
+        <Button
+            android:id="@+id/item_button_prev"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="prev"
+            android:textColor="@android:color/holo_blue_dark"
+            android:layout_margin="@dimen/activity_horizontal_margin"/>
+        <Button
+            android:id="@+id/item_button_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="next"
+            android:textColor="@android:color/holo_blue_dark"
+            android:layout_margin="@dimen/activity_horizontal_margin"/>
+    </LinearLayout>
 
 </LinearLayout>
+
 </ScrollView>

@@ -19,7 +19,6 @@ import java.util.Locale;
 public class Parser {
 
     private final static String LOG_TAG = "Parser";
-    private final static String UTF8 = "utf-8";
     private final static char STREAM_END = '\uFFFF';
     private final static String CHARSET = "charset=";
     private final static String ENCODING = "encoding=";
@@ -31,7 +30,7 @@ public class Parser {
 
     private final static String DATE_FORMATTER_RSS = "EEE, dd MMM yyyy HH:mm:ss Z";
     private final static String DATE_FORMATTER_ATOM = "yyyy-MM-dd'T'HH:mm:ss";
-    private final static String CDATA = "<![CDATA[";
+    private final static int CDATA_LENGTH_SKIP_CHAR = 9;
 
     private final static String CHANNEL = "channel";
     private final static String ITEM = "item";
@@ -42,13 +41,17 @@ public class Parser {
 
     private final static String FEED = "feed";
     private final static String ENTRY = "entry";
-    private final static String HREF = "href";
     private final static String PUBLISHED = "published";
     private final static String LAST_BUILD_DATE = "lastBuildDate";
     private final static String SUMMARY = "summary";
     private final static String CONTENT = "content";
 
-    private final static int FAILED_STRING_CONTAINS = -1;
+    private final static String VALUE_TYPE = "type";
+    private final static int VALUE_TYPE_LENGTH = 6;
+    private final static String VALUE_REL = "rel";
+    private final static int VALUE_REL_LENGTH = 5;
+    private final static String VALUE_HREF = "href";
+    private final static int VALUE_HREF_LENGTH = 6;
 
     private String charset = null;
     private String key = "";
@@ -58,8 +61,6 @@ public class Parser {
     private char sym;
     private Channel selectChanel;
     private Item selectItem;
-
-    public Parser() {}
 
     private void nextSym() {
         try {
@@ -138,7 +139,10 @@ public class Parser {
                 sym = (char) inputReader.read();
             }
             if (key.equals(XML_TAG_PREFERENCES)) {
-                while (sym != TAG_END || sym != STREAM_END) {
+                while (sym != TAG_END) {
+                    if(sym == STREAM_END){
+                        break;
+                    }
                     command.append(sym);
                     sym = (char) inputReader.read();
                 }
@@ -166,8 +170,6 @@ public class Parser {
                         System.out.println("CHANNEL");
                         selectChanel = new Channel();
                         parsItem(selectChanel);
-                        //listChannel.put(selectChanel.getTitle(), selectChanel);
-                        //listChannel.get(selectChanel.getTitle()).setUrl(url.toString());
                         break;
                     default:
                         break;
@@ -272,12 +274,12 @@ public class Parser {
             nextSym();
         }
         for (final String str : strSetting.toString().split(" ")) {
-            if (str.contains("type")) {
-                keySettings.setType(str.substring(6, str.length() - 1)); // 6 == "type=".length (-1 т.к. значение ключа заключенно в кавычки - ")
-            } else if (str.contains("rel")) {
-                keySettings.setRel(str.substring(5, str.length() - 1));
-            } else if (str.contains("href")) {
-                keySettings.setHref(str.substring(6, str.length() - 1));
+            if (str.contains(VALUE_TYPE)) {
+                keySettings.setType(str.substring(VALUE_TYPE_LENGTH, str.length() - 1)); // 6 == "type=".length (-1 т.к. значение ключа заключенно в кавычки - ")
+            } else if (str.contains(VALUE_REL)) {
+                keySettings.setRel(str.substring(VALUE_REL_LENGTH, str.length() - 1));
+            } else if (str.contains(VALUE_HREF)) {
+                keySettings.setHref(str.substring(VALUE_HREF_LENGTH, str.length() - 1));
             }
         }
         return keySettings;
@@ -290,7 +292,7 @@ public class Parser {
             nextSym();
         }
         if (sym == TAG_START) {
-            for (int i = 9; i > 0; i--) { // пропускаем "<!CDATA["
+            for (int i = CDATA_LENGTH_SKIP_CHAR; i > 0; i--) { // пропускаем "<!CDATA["
                 if (sym == 'd') { // <description></description>
                     return "none";
                 }

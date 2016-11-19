@@ -31,11 +31,11 @@ class ItemAdapter extends ArrayAdapter<Item> {
     public View getView(final int position, View convertView, @NonNull final ViewGroup parent) {
         final Item item = getItem(position);
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.row, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.row_item_view, parent, false);
         }
         if (item != null) {
-            ((TextView) convertView.findViewById(R.id.textViewForListView)).setText(Html.fromHtml(item.getTitle()));
-            ((TextView) convertView.findViewById(R.id.textViewForListView2)).setText(getTimeSpend(item));
+            ((TextView) convertView.findViewById(R.id.listView_textView_item_title)).setText(Html.fromHtml(item.getTitle()));
+            ((TextView) convertView.findViewById(R.id.listView_textView_item_date)).setText(getTimeSpend(item));
         }
         return convertView;
     }
@@ -51,8 +51,9 @@ class ItemAdapter extends ArrayAdapter<Item> {
         } else if (t > MILLISECOND_MINUTE) {
             final long minute = (t / MILLISECOND_MINUTE);
             return str(minute, timeConst.MINUTE);
+        } else {
+            return "менее минуты назад";
         }
-        return "";
     }
 
     private String str(final long i, final timeConst period) {

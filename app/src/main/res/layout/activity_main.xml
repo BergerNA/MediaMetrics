@@ -13,7 +13,7 @@
             android:orientation="horizontal"
             android:background="@color/colorMenu">
         <Spinner
-            android:id="@+id/spinnerTheme"
+            android:id="@+id/mainActivity_spinner_channel"
             android:layout_weight="30"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -22,7 +22,7 @@
 
             />
         <Button
-            android:id="@+id/buttonAdd"
+            android:id="@+id/mainActivity_button_add"
             android:text="+"
             android:layout_weight="1"
             android:layout_width="45dp"
@@ -31,11 +31,10 @@
             android:layout_marginTop="0dp"
             android:layout_marginLeft="0dp"
             android:layout_marginBottom="0dp"
-            android:onClick="buttonAddChannel_onClick"
             android:background="@color/colorMenu"
             />
         <Button
-            android:id="@+id/button_update"
+            android:id="@+id/mainActivity_button_update"
             android:text="up"
             android:layout_weight="1"
             android:layout_width="45dp"
@@ -44,13 +43,12 @@
             android:layout_marginTop="0dp"
             android:layout_marginLeft="0dp"
             android:layout_marginBottom="0dp"
-            android:onClick="buttonUpdate_onClick"
             android:background="@color/colorMenu"
             />
     </LinearLayout>
 
     <ListView
-        android:id="@+id/listView"
+        android:id="@+id/mainActivity_listView_item"
         android:paddingTop="2dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

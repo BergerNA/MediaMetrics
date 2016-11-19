@@ -34,7 +34,7 @@ class KeySettings {
         return type;
     }
 
-    public void setType(final String type) {
+    void setType(final String type) {
         if (type.equals(HTML)) {
             this.type = StringContent.ContentType.html;
         } else {

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import java.net.MalformedURLException;
@@ -17,18 +18,32 @@ public class ActivityAddChannel extends Activity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_channel);
-//        getActionBar().setDisplayHomeAsUpEnabled(true);
+        final Button buttonAddChannel = (Button) findViewById(R.id.add_channel_button_add);
+        buttonAddChannel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                addChannel();
+            }
+        });
+
+        final Button buttonClearDB = (Button) findViewById(R.id.add_channel_button_clearDB);
+        buttonClearDB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                buttonClearDB();
+            }
+        });
     }
 
-    public void buttonAddChannel_onClick(final View view) throws MalformedURLException {
-        final EditText editText = (EditText) findViewById(R.id.editText_addChannel);
+    public void addChannel() {
+        final EditText editText = (EditText) findViewById(R.id.add_channel_editText_url);
         final String url = editText.getText().toString();
         final Intent intent = new Intent(getApplicationContext(), ServiceParseURL.class);
         intent.putExtra(ServiceParseURL.EXTRA_MESSAGE_URL, url);
         startService(intent);
     }
 
-    public void buttonClearDB_onClick(final View view) {
+    public void buttonClearDB() {
         final DatabaseHelper databaseHelper = DatabaseHelper.getInstance(getApplicationContext());
         databaseHelper.clearDB();
     }

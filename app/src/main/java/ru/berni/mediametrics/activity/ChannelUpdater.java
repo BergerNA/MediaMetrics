@@ -28,7 +28,8 @@ class ChannelUpdater extends ExchangeServices implements Runnable {
         for (final Channel channel: listChannel) {
             final Parser parser = new Parser();
             try {
-               final Channel channelResult =  parser.parsChannel(new URL(channel.getUrl()));
+               final URL urls = new URL(channel.getUrl());
+               final Channel channelResult =  parser.parsChannel(urls);
                 if(channelResult != null){
                     channel.setListItem(channelResult.getListItem());
                 }
@@ -38,7 +39,7 @@ class ChannelUpdater extends ExchangeServices implements Runnable {
             }
         }
         context = null;
-        sendMessageChannelListeners();
+        sendMessageExchangeListener();
         runThread = false;
     }
 
