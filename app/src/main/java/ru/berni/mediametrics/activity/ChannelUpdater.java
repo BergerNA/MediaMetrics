@@ -34,6 +34,7 @@ class ChannelUpdater extends ExchangeServices implements Runnable {
                     channel.setListItem(channelResult.getListItem());
                 }
                 databaseHelper.addChannelItems(channel);
+                getChannelItems(channelResult);
             } catch (final MalformedURLException e) {
                 e.printStackTrace();
             }

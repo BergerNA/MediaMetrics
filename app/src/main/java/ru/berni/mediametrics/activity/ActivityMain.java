@@ -41,14 +41,12 @@ public class ActivityMain extends Activity {
     private RssUpdateListener channelListener = new RssUpdateListener(RssUpdateListener.EntityType.CHANNEL) {
         @Override
         public void onUpdate() {
-            listChannel = exchange.getChannelList();
             getChannel();
         }
     };
     private RssUpdateListener itemListener = new RssUpdateListener(RssUpdateListener.EntityType.ITEM) {
         @Override
         public void onUpdate() {
-            listItem = exchange.getItemList();
             getItem();
         }
     };
@@ -57,6 +55,7 @@ public class ActivityMain extends Activity {
         @Override
         public void onUpdate() {
             if(exchange != null && selectChannel != null){
+                //getItem();
                 exchange.getChannelItems(selectChannel);
             }
         }
@@ -71,6 +70,7 @@ public class ActivityMain extends Activity {
 
             exchange.setRssListener(channelListener);
             exchange.setRssListener(itemListener);
+            exchange.setExchangeListener(eventUpdate);
             if (exchange.listItemIsEmpty()) {
                 exchange.getAllItems();
             } else {
@@ -155,7 +155,7 @@ public class ActivityMain extends Activity {
         listItem = exchange.getItemList();
         adapterItems.clear();
         adapterItems.addAll(listItem);
-        adapterItems.notifyDataSetChanged();
+       // adapterItems.notifyDataSetChanged();
     }
 
     private void setItemViewItemAdapter() {
@@ -172,7 +172,7 @@ public class ActivityMain extends Activity {
     }
 
     private void setChannelViewChannelAdapter() {
-        adapterChannels = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, listChannel);
+        //adapterChannels = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, listChannel);
         adapterChannels = new ChannelAdapter(getApplicationContext(), listChannel);
         spinnerChannel.setAdapter(adapterChannels);
         spinnerChannel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

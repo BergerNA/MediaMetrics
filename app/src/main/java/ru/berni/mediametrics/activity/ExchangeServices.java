@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.IBinder;
 
 import java.util.ArrayList;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -20,7 +21,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 public class ExchangeServices extends Service {
 
     static ArrayList<Channel> listChannel = new ArrayList<>();
-    private static ArrayList<Item> listItem = new ArrayList<>();
+    static ArrayList<Item> listItem = new ArrayList<>();
 
     static ArrayList<ExchangeListener> listListener = new ArrayList<>();
 
@@ -45,10 +46,10 @@ public class ExchangeServices extends Service {
         handler = new Handler();
         executor = new ThreadPoolExecutor(
                 NUMBER_OF_CORES,
-                NUMBER_OF_CORES,
+                NUMBER_OF_CORES*2,
                 6L,
                 SECONDS,
-                new LinkedBlockingQueue<Runnable>()
+                new ArrayBlockingQueue<Runnable>(24)
         );
     }
 
@@ -80,18 +81,9 @@ public class ExchangeServices extends Service {
         if (channel == null || channel.getUrl() == null) {
             return;
         }
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    final DatabaseHelper databaseHelper = DatabaseHelper.getInstance(getApplicationContext());
-                    listItem = databaseHelper.getItem(channel);
-                    sendMessageItemListeners();
-                } catch (final Throwable exc){
-                    exc.printStackTrace();
-                }
-            }
-        });
+       if(!ChannelItems.isRunning()){
+           executor.execute(new ChannelItems(this, channel));
+       }
     }
 
     void getAllItems() {
@@ -174,7 +166,7 @@ public class ExchangeServices extends Service {
         listListener.remove(listener);
     }
 
-    synchronized void sendMessageExchangeListener(){
+    synchronized static void sendMessageExchangeListener(){
         for (final ExchangeListener listener: listListener){
 
             handler.post(new Runnable() {

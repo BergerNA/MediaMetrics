@@ -1,5 +1,5 @@
 package ru.berni.mediametrics.activity;
 
-public interface ExchangeListener {
+interface ExchangeListener {
     void onUpdate();
 }
