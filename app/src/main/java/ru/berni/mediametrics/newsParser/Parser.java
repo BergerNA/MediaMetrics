@@ -102,6 +102,7 @@ public class Parser {
                     final Charset charsetContent = Charset.forName(charset);
                     reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), charsetContent));
                     parsChannel();
+                    selectChanel.setUrl(urlConnection.getURL().toString());
                 }catch (final IllegalCharsetNameException exc){
                     Log.i(LOG_TAG, "Unknown charset: " + charset);
                 }catch (final UnsupportedCharsetException exc){

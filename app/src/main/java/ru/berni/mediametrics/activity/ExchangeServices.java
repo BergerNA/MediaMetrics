@@ -46,10 +46,10 @@ public class ExchangeServices extends Service {
         handler = new Handler();
         executor = new ThreadPoolExecutor(
                 NUMBER_OF_CORES,
-                NUMBER_OF_CORES*2,
+                NUMBER_OF_CORES * 2,
                 6L,
                 SECONDS,
-                new ArrayBlockingQueue<Runnable>(24)
+                new ArrayBlockingQueue<Runnable>(100)
         );
     }
 
@@ -76,14 +76,15 @@ public class ExchangeServices extends Service {
     }
 
     static Channel selectChannel = null;
+
     void getChannelItems(final Channel channel) {
         selectChannel = channel;
         if (channel == null || channel.getUrl() == null) {
             return;
         }
-       if(!ChannelItems.isRunning()){
-           executor.execute(new ChannelItems(this, channel));
-       }
+        if (!ChannelItems.isRunning()) {
+            executor.execute(new ChannelItems(this, channel));
+        }
     }
 
     void getAllItems() {
@@ -97,7 +98,9 @@ public class ExchangeServices extends Service {
         });
     }
 
-    ArrayList<Channel> getChannelList() { return listChannel; }
+    ArrayList<Channel> getChannelList() {
+        return listChannel;
+    }
 
     ArrayList<Item> getItemList() {
         return listItem;
@@ -166,15 +169,9 @@ public class ExchangeServices extends Service {
         listListener.remove(listener);
     }
 
-    synchronized static void sendMessageExchangeListener(){
-        for (final ExchangeListener listener: listListener){
-
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    listener.onUpdate();
-                }
-            });
+    synchronized static void sendMessageExchangeListener() {
+        for (final ExchangeListener listener : listListener) {
+            listener.onUpdate();
         }
     }
 }

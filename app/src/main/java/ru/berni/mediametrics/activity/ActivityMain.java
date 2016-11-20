@@ -54,7 +54,7 @@ public class ActivityMain extends Activity {
     private ExchangeListener eventUpdate = new ExchangeListener() {
         @Override
         public void onUpdate() {
-            if(exchange != null && selectChannel != null){
+            if (exchange != null && selectChannel != null) {
                 //getItem();
                 exchange.getChannelItems(selectChannel);
             }
@@ -155,7 +155,7 @@ public class ActivityMain extends Activity {
         listItem = exchange.getItemList();
         adapterItems.clear();
         adapterItems.addAll(listItem);
-       // adapterItems.notifyDataSetChanged();
+        // adapterItems.notifyDataSetChanged();
     }
 
     private void setItemViewItemAdapter() {
