@@ -10,7 +10,7 @@ class ChannelItems  extends ExchangeServices implements Runnable {
 
     private static boolean runThread = false;
     private Context context;
-    private Channel channel;
+    private final Channel channel;
 
     public ChannelItems(@NonNull final Context context, final Channel channel) {
         this.context = context;

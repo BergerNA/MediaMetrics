@@ -7,8 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import java.net.MalformedURLException;
-
 import ru.berni.mediametrics.dataBase.DatabaseHelper;
 import ru.berni.mediametrics.R;
 
@@ -35,7 +33,7 @@ public class ActivityAddChannel extends Activity {
         });
     }
 
-    public void addChannel() {
+    private void addChannel() {
         final EditText editText = (EditText) findViewById(R.id.add_channel_editText_url);
         final String url = editText.getText().toString();
         final Intent intent = new Intent(getApplicationContext(), ServiceParseURL.class);
@@ -43,7 +41,7 @@ public class ActivityAddChannel extends Activity {
         startService(intent);
     }
 
-    public void buttonClearDB() {
+    private void buttonClearDB() {
         final DatabaseHelper databaseHelper = DatabaseHelper.getInstance(getApplicationContext());
         databaseHelper.clearDB();
     }

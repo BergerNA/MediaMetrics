@@ -6,7 +6,7 @@ import java.util.Date;
 public class Channel implements RssEntity {
 
     private ArrayList<Item> listItem = new ArrayList<>();
-    private StringContent title;
+    private final StringContent title;
     private String url;
     private String description;
     private Date date;

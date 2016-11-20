@@ -31,9 +31,9 @@ public class ActivityItemView extends Activity {
     private final static String HTML_IMAGE_WIDTH_SETTINGS = "<style>img{display: inline;height: auto;max-width: 100%;}</style>";
     private final static String DATE_FORMAT = "dd.MM.yyyy hh:mm:ss";
 
-    public final static String EXTRA_MESSAGE_ID = "_id";
-    public final static String EXTRA_MESSAGE_ARRAY_ID = "array_id";
-    public final static String EXTRA_MESSAGE_ARRAY_LENGTH = "array_length";
+    private final static String EXTRA_MESSAGE_ID = "_id";
+    private final static String EXTRA_MESSAGE_ARRAY_ID = "array_id";
+    private final static String EXTRA_MESSAGE_ARRAY_LENGTH = "array_length";
 
     private final static String KEY_SCROLL_Y = "scrollY";
     private final static String CHARSET = "UTF-8";

@@ -48,13 +48,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String LOG_TAG = "DatabaseHelper:";
 
-    private static DatabaseHelper dbInstance;
+    private static volatile DatabaseHelper dbInstance;
 
-    public static synchronized DatabaseHelper getInstance(final Context context) {
-        if (dbInstance == null) {
-            dbInstance = new DatabaseHelper(context.getApplicationContext());
+    public static DatabaseHelper getInstance(final Context context) {
+        DatabaseHelper localDBInstance = dbInstance;
+        if(localDBInstance == null){
+            synchronized (DatabaseHelper.class){
+                localDBInstance = dbInstance;
+                if(localDBInstance == null){
+                    dbInstance = localDBInstance = new DatabaseHelper(context.getApplicationContext());
+                }
+            }
         }
-        return dbInstance;
+        return localDBInstance;
     }
 
     private DatabaseHelper(final Context context) {

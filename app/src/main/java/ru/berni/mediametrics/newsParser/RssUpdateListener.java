@@ -4,7 +4,7 @@ public abstract class RssUpdateListener{
     public enum EntityType {
         CHANNEL, ITEM
     }
-    private EntityType entityType;
+    private final EntityType entityType;
 
     protected RssUpdateListener(final EntityType entityType){
         this.entityType = entityType;

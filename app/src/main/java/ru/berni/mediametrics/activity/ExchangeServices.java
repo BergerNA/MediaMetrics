@@ -8,8 +8,8 @@ import android.os.IBinder;
 
 import java.util.ArrayList;
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import ru.berni.mediametrics.dataBase.DatabaseHelper;
 import ru.berni.mediametrics.newsParser.Channel;
@@ -23,11 +23,15 @@ public class ExchangeServices extends Service {
     static ArrayList<Channel> listChannel = new ArrayList<>();
     static ArrayList<Item> listItem = new ArrayList<>();
 
-    static ArrayList<ExchangeListener> listListener = new ArrayList<>();
+    private final static ArrayList<ExchangeListener> listListener = new ArrayList<>();
 
     private final IBinder binder = new ExchangeBinders();
 
-    private final int NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors();
+    private final static int CORE_POOL_SIZE = Runtime.getRuntime().availableProcessors();
+    private final static int MAX_POOL_SIZE = CORE_POOL_SIZE * 2;
+    private final static long KEEP_ALIVE_TIME = 6L;
+    private final static TimeUnit KEEP_ALIVE_TIME_UNIT = SECONDS;
+    private final static int BLOCKING_QUEUE = 10;
 
     private final static ArrayList<RssUpdateListener> listRssListener = new ArrayList<>();
 
@@ -37,7 +41,7 @@ public class ExchangeServices extends Service {
         }
     }
 
-    static Handler handler;
+    private static Handler handler;
     private ThreadPoolExecutor executor;
 
     @Override
@@ -45,11 +49,11 @@ public class ExchangeServices extends Service {
         super.onCreate();
         handler = new Handler();
         executor = new ThreadPoolExecutor(
-                NUMBER_OF_CORES,
-                NUMBER_OF_CORES * 2,
-                6L,
-                SECONDS,
-                new ArrayBlockingQueue<Runnable>(100)
+                CORE_POOL_SIZE,
+                MAX_POOL_SIZE,
+                KEEP_ALIVE_TIME,
+                KEEP_ALIVE_TIME_UNIT,
+                new ArrayBlockingQueue<Runnable>(BLOCKING_QUEUE)
         );
     }
 
@@ -60,7 +64,9 @@ public class ExchangeServices extends Service {
 
     @Override
     public void onDestroy() {
+        listListener.clear();
         executor.shutdown();
+        super.onDestroy();
     }
 
     void updateChannel() {
@@ -75,10 +81,7 @@ public class ExchangeServices extends Service {
         }
     }
 
-    static Channel selectChannel = null;
-
     void getChannelItems(final Channel channel) {
-        selectChannel = channel;
         if (channel == null || channel.getUrl() == null) {
             return;
         }
@@ -119,7 +122,7 @@ public class ExchangeServices extends Service {
         listRssListener.add(listener);
     }
 
-    void delListener(final RssUpdateListener listener) {
+    void delRssListener(final RssUpdateListener listener) {
         listRssListener.remove(listener);
     }
 

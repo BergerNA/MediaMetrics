@@ -38,30 +38,29 @@ public class ActivityMain extends Activity {
 
     private Channel selectChannel = null;
 
-    private RssUpdateListener channelListener = new RssUpdateListener(RssUpdateListener.EntityType.CHANNEL) {
+    private final RssUpdateListener channelListener = new RssUpdateListener(RssUpdateListener.EntityType.CHANNEL) {
         @Override
         public void onUpdate() {
             getChannel();
         }
     };
-    private RssUpdateListener itemListener = new RssUpdateListener(RssUpdateListener.EntityType.ITEM) {
+    private final RssUpdateListener itemListener = new RssUpdateListener(RssUpdateListener.EntityType.ITEM) {
         @Override
         public void onUpdate() {
             getItem();
         }
     };
 
-    private ExchangeListener eventUpdate = new ExchangeListener() {
+    private final ExchangeListener eventUpdate = new ExchangeListener() {
         @Override
         public void onUpdate() {
             if (exchange != null && selectChannel != null) {
-                //getItem();
                 exchange.getChannelItems(selectChannel);
             }
         }
     };
 
-    private ServiceConnection connection = new ServiceConnection() {
+    private final ServiceConnection connection = new ServiceConnection() {
         @Override
         public void onServiceConnected(final ComponentName componentName, final IBinder binder) {
             final ExchangeServices.ExchangeBinders exchangeBinder = (ExchangeServices.ExchangeBinders) binder;
@@ -135,8 +134,8 @@ public class ActivityMain extends Activity {
     protected void onPause() {
         super.onPause();
         if (exchange != null) {
-            exchange.delListener(channelListener);
-            exchange.delListener(itemListener);
+            exchange.delRssListener(channelListener);
+            exchange.delRssListener(itemListener);
             exchange.delExchangeListener(eventUpdate);
         }
         if (exchangeConnect) {
@@ -172,7 +171,6 @@ public class ActivityMain extends Activity {
     }
 
     private void setChannelViewChannelAdapter() {
-        //adapterChannels = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, listChannel);
         adapterChannels = new ChannelAdapter(getApplicationContext(), listChannel);
         spinnerChannel.setAdapter(adapterChannels);
         spinnerChannel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
