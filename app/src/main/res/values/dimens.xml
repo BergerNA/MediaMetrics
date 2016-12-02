@@ -3,5 +3,26 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+
     <dimen name="text_margin">16dp</dimen>
+    <dimen name="text_top_activity">16dp</dimen>
+
+    <dimen name="text_edit_margin_horizontal">6dp</dimen>
+    <dimen name="text_edit_margin_top">4dp</dimen>
+    <dimen name="text_edit_margin_bottom">12dp</dimen>
+
+    <dimen name="button_margin_horizontal">16dp</dimen>
+    <dimen name="button_margin_above">8dp</dimen>
+    <dimen name="button_margin_top">16dp</dimen>
+    <dimen name="button_margin_bottom">16dp</dimen>
+
+    <dimen name="dropDownVerticalOffset">0dp</dimen>
+
+    <dimen name="textSize_itemView_title">22sp</dimen>
+    <dimen name="textSize_itemView_date">14sp</dimen>
+    <dimen name="textSize_itemView_description">16sp</dimen>
+    <dimen name="textSize_itemView_webView">22sp</dimen>
+
+
+
 </resources>

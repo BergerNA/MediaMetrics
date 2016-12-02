@@ -1,10 +1,11 @@
-package ru.berni.mediametrics.activity;
+package ru.berni.mediametrics.activity.classHelper;
 
 import android.content.Context;
 
+import ru.berni.mediametrics.activity.ExchangeServices;
 import ru.berni.mediametrics.dataBase.DatabaseHelper;
 
-class ChannelGetter extends ExchangeServices implements Runnable{
+public final class ChannelGetter extends ExchangeServices implements Runnable{
 
     private static boolean isRunning = false;
     private Context context;
@@ -13,7 +14,7 @@ class ChannelGetter extends ExchangeServices implements Runnable{
         this.context = context;
     }
 
-    static boolean isRunning() {
+    public static boolean isRunning() {
         return isRunning;
     }
 

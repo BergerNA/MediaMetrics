@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toolbar_actionbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="?attr/actionBarSize"
+    android:fitsSystemWindows="true"
+    app:theme="@style/AppTheme"
+    android:background="?attr/colorPrimary"
+    >
+
+    <Spinner
+        android:id="@+id/toolbar_spinner_channel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:popupBackground="?attr/colorPrimary"
+        android:dropDownVerticalOffset="@dimen/dropDownVerticalOffset"
+        />
+
+</android.support.v7.widget.Toolbar>

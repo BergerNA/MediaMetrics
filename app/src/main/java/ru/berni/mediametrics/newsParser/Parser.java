@@ -54,7 +54,7 @@ public class Parser {
     private final static int VALUE_HREF_LENGTH = 6;
 
     private String charset = null;
-    private String key = "";
+    private StringBuilder key = new StringBuilder();
     private final StringBuilder stringValue = new StringBuilder();
 
     private BufferedReader reader;
@@ -65,11 +65,12 @@ public class Parser {
     private void nextSym() {
         try {
             sym = (char) reader.read();
+            if (sym == '\n' || sym == '\r' || sym == '\t') {
+                nextSym();
+            }
         } catch (final IOException e) {
             e.printStackTrace();
-        }
-        if (sym == '\n' || sym == '\r' || sym == '\t') {
-            nextSym();
+            sym = STREAM_END;
         }
     }
 
@@ -131,15 +132,15 @@ public class Parser {
         sym = (char) inputReader.read();
         final StringBuilder command = new StringBuilder();
         if (sym == TAG_START) {
-            key = "";
+            key.setLength(0);
             while (sym != TAG_END) {
                 if (sym == ' ' || sym == ':' || sym == STREAM_END) {
                     break;
                 }
-                key += sym;
+                key.append(sym);
                 sym = (char) inputReader.read();
             }
-            if (key.equals(XML_TAG_PREFERENCES)) {
+            if (key.toString().equals(XML_TAG_PREFERENCES)) {
                 while (sym != TAG_END) {
                     if(sym == STREAM_END){
                         break;
@@ -165,7 +166,7 @@ public class Parser {
         while (sym != STREAM_END) {
             if (sym == TAG_START) {
                 readKey();
-                switch (key) {
+                switch (key.toString()) {
                     case FEED:
                     case CHANNEL:
                         System.out.println("CHANNEL");
@@ -175,7 +176,7 @@ public class Parser {
                     default:
                         break;
                 }
-                key = "";
+                //key.setLength(0);
             }
             nextSym();
         }
@@ -183,11 +184,10 @@ public class Parser {
 
     private void parsItem(final RssEntity rssObject) {
         nextSym();
-        final char endStream = STREAM_END;
-        while (sym != endStream) {
+        while (sym != STREAM_END) {
             if (sym == TAG_START) {
                 readKey();
-                switch (key) {
+                switch (key.toString()) {
                     case TITLE:
                         if (sym == ' ') {
                             readKeySetting();
@@ -235,7 +235,7 @@ public class Parser {
                     default:
                         break;
                 }
-                key = "";
+                //key.setLength(0);
             }
             nextSym();
         }
@@ -249,20 +249,23 @@ public class Parser {
         } catch (final ParseException exc) {
             Log.e(LOG_TAG, "Error when try pars string date of news");
         }
-        key = "";
+        //key.setLength(0);
         return date;
     }
 
     private void readKey() {
-        key = "";
+        key.setLength(0);
         nextSym();
         while (sym != TAG_END) {
             if (sym == ' ' || sym == ':') {
                 // readKeySetting();
                 return;
             }
-            key += sym;
+            key.append(sym);
             nextSym();
+            if(sym == STREAM_END){
+                break;
+            }
         }
     }
 
@@ -273,6 +276,9 @@ public class Parser {
         while (sym != TAG_END) {
             strSetting.append(sym);
             nextSym();
+            if(sym == STREAM_END){
+                break;
+            }
         }
         for (final String str : strSetting.toString().split(" ")) {
             if (str.contains(VALUE_TYPE)) {
@@ -291,6 +297,9 @@ public class Parser {
         nextSym();
         while (sym == ' ') {
             nextSym();
+            if(sym == STREAM_END){
+                break;
+            }
         }
         if (sym == TAG_START) {
             for (int i = CDATA_LENGTH_SKIP_CHAR; i > 0; i--) { // пропускаем "<!CDATA["
@@ -302,6 +311,9 @@ public class Parser {
             while (sym != ']' && sym != '[') {
                 stringValue.append(sym);
                 nextSym();
+                if(sym == STREAM_END){
+                    break;
+                }
             }
             return stringValue.toString();
         }
@@ -312,6 +324,9 @@ public class Parser {
                 stringValue.append(sym);
             }
             nextSym();
+            if(sym == STREAM_END){
+                break;
+            }
         }
         return stringValue.toString();
     }

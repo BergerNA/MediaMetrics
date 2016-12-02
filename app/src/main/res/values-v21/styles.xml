@@ -1,10 +1,18 @@
 <resources>
 
-    <style name="AppTheme" parent="android:Theme.Material.Light.DarkActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="searchViewStyle">@style/AppSearchViewStyle</item>
 
+    </style>
+    <style name="AppSearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <item name="android:textCursorDrawable">@color/textColor</item>
+        <item name="queryBackground">@android:color/transparent</item>
+        <item name="searchIcon">@drawable/ic_create_white_36dp</item>
+        <item name="closeIcon">@drawable/ic_cached_white_36dp</item>
+        <item name="queryHint">@string/ok</item>
+        <item name="android:imeActionId">6</item>
     </style>
 </resources>

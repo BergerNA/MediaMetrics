@@ -1,0 +1,52 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:title="@string/navigation_menu_group_channel">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/navigation_drawer_channel_add"
+                    android:icon="@drawable/ic_rss_feed_white_24dp"
+                    android:title="@string/navigation_menu_group_channel_add" />
+            </group>
+        </menu>
+    </item>
+    <item android:title="@string/navigation_menu_group_setting">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/navigation_drawer_setting_theme"
+                    android:icon="@drawable/ic_burst_mode_white_24dp"
+                    android:title="@string/navigation_menu_group_setting_theme" />
+                <item
+                    android:id="@+id/navigation_drawer_setting_language"
+                    android:icon="@drawable/ic_language_white_24dp"
+                    android:title="@string/navigation_menu_group_setting_language" />
+            </group>
+        </menu>
+    </item>
+    <item android:title="@string/navigation_menu_group_internet">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/navigation_drawer_internet_period"
+                    android:icon="@drawable/ic_update_white_24dp"
+                    android:title="@string/navigation_menu_group_internet_period" />
+                <item
+                    android:id="@+id/navigation_drawer_internet_wifi"
+                    android:icon="@drawable/ic_network_wifi_white_24dp"
+                    app:actionLayout="@layout/action_view_switch"
+                    android:title="@string/navigation_menu_group_internet_wifi" />
+            </group>
+        </menu>
+    </item>
+    <item android:title="@string/navigation_menu_group_program">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/navigation_drawer_program_about"
+                    android:icon="@drawable/ic_info_outline_white_24dp"
+                    android:title="@string/navigation_menu_group_program_about" />
+            </group>
+        </menu>
+    </item>
+</menu>

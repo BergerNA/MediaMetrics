@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="err_valid_url">Please enter a valid url</string>
+    <string name="err_null_url">Please enter a valid url</string>
+    <string name="err_internet_connection">Check your internet connection</string>
+    <string name="err_check_internet_connection">Can\'t check internet connection, try add later</string>
+</resources>

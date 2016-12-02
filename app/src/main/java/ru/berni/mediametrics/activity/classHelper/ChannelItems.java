@@ -1,12 +1,13 @@
-package ru.berni.mediametrics.activity;
+package ru.berni.mediametrics.activity.classHelper;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import ru.berni.mediametrics.activity.ExchangeServices;
 import ru.berni.mediametrics.dataBase.DatabaseHelper;
 import ru.berni.mediametrics.newsParser.Channel;
 
-class ChannelItems  extends ExchangeServices implements Runnable {
+public final class ChannelItems  extends ExchangeServices implements Runnable {
 
     private static boolean runThread = false;
     private Context context;
@@ -31,7 +32,7 @@ class ChannelItems  extends ExchangeServices implements Runnable {
         runThread = false;
     }
 
-    static boolean isRunning(){
+    public static boolean isRunning(){
         return runThread;
     }
 }

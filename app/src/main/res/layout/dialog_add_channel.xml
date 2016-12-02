@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/text_margin"
+            android:layout_marginTop="@dimen/text_top_activity"
+            android:text="@string/activity_channelAdd_infoUrl" />
+
+        <EditText
+            android:id="@+id/dialog_add_channel_editText_link"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/text_edit_margin_bottom"
+            android:layout_marginLeft="@dimen/text_edit_margin_horizontal"
+            android:layout_marginRight="@dimen/text_edit_margin_horizontal"
+            android:layout_marginTop="@dimen/text_edit_margin_top"
+            android:hint="@string/activity_channelAdd_enterUrl" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/text_margin"
+            android:text="@string/activity_channelAdd_infoTitle" />
+
+        <EditText
+            android:id="@+id/dialog_add_channel_editText_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/text_edit_margin_bottom"
+            android:layout_marginLeft="@dimen/text_edit_margin_horizontal"
+            android:layout_marginRight="@dimen/text_edit_margin_horizontal"
+            android:layout_marginTop="@dimen/text_edit_margin_top"
+            android:hint="@string/activity_channelAdd_enterTitle" />
+
+        <TextView
+            android:id="@+id/dialog_add_channel_textView_message"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/text_edit_margin_bottom"
+            android:layout_marginLeft="@dimen/text_edit_margin_horizontal"
+            android:layout_marginRight="@dimen/text_edit_margin_horizontal"
+            android:layout_marginTop="@dimen/text_edit_margin_top"
+            android:text=""
+            android:textColor="@color/error_message"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+</ScrollView>

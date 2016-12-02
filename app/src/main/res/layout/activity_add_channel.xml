@@ -1,40 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".activity.ActivityAddChannel">
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="?attr/colorPrimaryDark">
 
-    <TextView
-        android:id="@+id/add_channel_textView_infoAdd"
-        android:text="@string/addChannel_infoAddChannel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"/>
-
-    <EditText
-        android:id="@+id/add_channel_editText_url"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/add_channel_textView_infoAdd"
-        android:inputType="textUri" />
-    <Button
-    android:id="@+id/add_channel_button_add"
-    android:text="@string/addChannel_buttonAddChannel"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_below="@+id/add_channel_editText_url"/>
+        android:orientation="horizontal"
+        android:background="?attr/colorPrimary">
+        <ImageButton
+            android:id="@+id/activity_channel_settings_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="?attr/colorPrimary"
+            android:src="@drawable/ic_delete_white_36dp"
+            tools:targetApi="lollipop"
+            android:contentDescription="delete" />
+        <ImageButton
+            android:id="@+id/activity_channel_settings_create"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/ic_create_white_36dp"
+            android:backgroundTint="?attr/colorPrimary"
+            tools:targetApi="lollipop"
+            android:contentDescription="create" />
+        <ImageButton
+            android:id="@+id/activity_channel_settings_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/ic_add_white_36dp"
+            android:backgroundTint="?attr/colorPrimary"
+            tools:targetApi="lollipop"
+            android:contentDescription="add" />
 
-    <Button
-        android:id="@+id/add_channel_button_clearDB"
-        android:text="ClearDB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/add_channel_button_add"/>
-
-</RelativeLayout>
+    </LinearLayout>
+    <ListView
+        android:id="@+id/activity_channel_listView_channel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:listSelector="@color/colorAccent"
+        android:background="@drawable/gradientback"
+        >
+    </ListView>
+</LinearLayout>

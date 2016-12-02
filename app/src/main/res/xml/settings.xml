@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/setting_internet">
+        <ListPreference
+            android:key="@string/setting_internet_period_key"
+            android:title="@string/setting_internet_period"
+            android:summary="@string/setting_internet_period_dsc"
+            android:defaultValue="4"
+            android:entries="@array/array_period"
+            android:entryValues="@array/array_period"
+            android:dialogTitle="@string/setting_internet_period" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="wifi"
+            android:title="@string/setting_internet_wifi"
+            android:summary="@string/setting_internet_wifi_dsc"
+            />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/setting_setting">
+        <ListPreference
+            android:key="language"
+            android:title="@string/setting_setting_language"
+            android:summary="@string/setting_setting_language_dsc"
+            android:defaultValue="1"
+            android:entries="@array/array_language"
+            android:entryValues="@array/array_language"
+            android:dialogTitle="@string/setting_setting_language_dsc" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="theme_light"
+            android:title="@string/setting_setting_theme"
+            android:summary="@string/setting_setting_theme_dsc"
+            />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/setting_program">
+        <PreferenceScreen
+            android:key="about"
+            android:title="@string/setting_program_about"
+            android:summary="@string/setting_program_about_dsc">
+            <PreferenceScreen
+                android:key="about"
+                android:title="@string/setting_program_about"
+                android:summary="@string/program_about">
+            </PreferenceScreen>
+        </PreferenceScreen>
+    </PreferenceCategory>
+</PreferenceScreen>

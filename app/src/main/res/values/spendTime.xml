@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="plurals_less_minute"> менее минуты назад</string>
+
+    <string name="plurals_day_first"> день назад</string>
+    <string name="plurals_hour_first"> час назад</string>
+    <string name="plurals_minute_first"> минута назад</string>
+
+    <string name="plurals_day_second"> дня назад</string>
+    <string name="plurals_hour_second"> часа назад</string>
+    <string name="plurals_minutes_second"> минуты назад</string>
+
+    <string name="plurals_day_third"> дней назад</string>
+    <string name="plurals_hour_third"> часов назад</string>
+    <string name="plurals_minute_third"> минут назад</string>
+</resources>

@@ -47,7 +47,6 @@ public class Item implements RssEntity{
         return url;
     }
 
-    @Override
     public void setDescription(final String description) {
         this.description.setContent(description);
     }

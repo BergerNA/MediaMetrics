@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:yourapp="http://schemas.android.com/apk/res-auto">
+
+        <item
+            android:id="@+id/action_update"
+            android:checkable="true"
+            android:enabled="true"
+            android:icon="@drawable/ic_cached_white_36dp"
+            android:title="Update channel"
+            android:visible="true"
+            yourapp:showAsAction="ifRoom" />
+        <item
+            android:id="@+id/action_channel_settings"
+
+            android:enabled="true"
+            android:icon="@drawable/ic_create_white_36dp"
+            android:title="Create channel"
+            android:visible="true"
+            yourapp:showAsAction="never" />
+        <item
+            android:id="@+id/action_app_settings"
+
+            android:enabled="true"
+            android:icon="@drawable/ic_settings_white_36dp"
+            android:title="App settings"
+            android:visible="true"
+            yourapp:showAsAction="never" />
+
+</menu>

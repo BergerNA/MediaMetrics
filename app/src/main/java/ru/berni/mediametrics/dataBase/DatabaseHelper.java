@@ -43,6 +43,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_ITEM_IMAGE_PATH = "imagePath";
     private static final String KEY_ITEM_FK_ID_CHANNEL = "fk_id_Channel";
 
+    private static final String KEY_COUNT_CHANNEL_ITEMS = "COUNT(" + TABLE_ITEMS + "." + KEY_ITEM_FK_ID_CHANNEL + ")";
+
     // Result of a failed database transaction
     private final static long DB_FAILED_TRANSACTION = -1;
 
@@ -52,10 +54,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static DatabaseHelper getInstance(final Context context) {
         DatabaseHelper localDBInstance = dbInstance;
-        if(localDBInstance == null){
-            synchronized (DatabaseHelper.class){
+        if (localDBInstance == null) {
+            synchronized (DatabaseHelper.class) {
                 localDBInstance = dbInstance;
-                if(localDBInstance == null){
+                if (localDBInstance == null) {
                     dbInstance = localDBInstance = new DatabaseHelper(context.getApplicationContext());
                 }
             }
@@ -96,8 +98,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 KEY_ITEM_IMAGE_PATH + " TEXT," +
                 KEY_ITEM_FK_ID_CHANNEL + " INTEGER NOT NULL," +
                 " FOREIGN KEY (" + KEY_ITEM_FK_ID_CHANNEL + ")" +
-                " REFERENCES " + TABLE_CHANNELS + "(" + KEY_CHANNEL_ID + ")" +
-                ")";
+                " REFERENCES " + TABLE_CHANNELS + "(" + KEY_CHANNEL_ID + ") " +
+                "ON DELETE CASCADE ON UPDATE CASCADE)";
         db.execSQL(CREATE_CHANNELS_TABLE);
         db.execSQL(CREATE_ITEMS_TABLE);
     }
@@ -128,7 +130,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             channelId = db.insertOrThrow(TABLE_CHANNELS, null, contentValues);
             channel.setId(channelId);
         } catch (final SQLiteException exc) {
-            if (exc.getMessage().contains("UNIQUE")){
+            if (exc.getMessage().contains("UNIQUE")) {
                 channelId = getChannelId(channel);
             }
             Log.d(LOG_TAG, "Error while add channel to database.");
@@ -216,8 +218,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public ArrayList<Channel> getAllChannel() {
         final ArrayList<Channel> listChannel = new ArrayList<>();
+        final String CHANNELS_SELECT_QUERY = String.format(
+                "SELECT %s.%s,%s.%s,%s.%s,%s.%s, COUNT(%s.%s) " +
+                        "FROM %s LEFT JOIN %s ON %s.%s = %s.%s GROUP BY %s.%s;",
+                TABLE_CHANNELS, KEY_CHANNEL_ID,
+                TABLE_CHANNELS, KEY_CHANNEL_LAST_DATE_UPDATE,
+                TABLE_CHANNELS, KEY_CHANNEL_TITLE,
+                TABLE_CHANNELS, KEY_CHANNEL_URL,
 
-        final String CHANNELS_SELECT_QUERY = "SELECT * FROM " + TABLE_CHANNELS;
+                TABLE_ITEMS, KEY_ITEM_FK_ID_CHANNEL,
+
+                TABLE_CHANNELS,
+
+                TABLE_ITEMS,
+
+                TABLE_CHANNELS, KEY_CHANNEL_ID,
+                TABLE_ITEMS, KEY_ITEM_FK_ID_CHANNEL,
+
+                TABLE_ITEMS, KEY_ITEM_FK_ID_CHANNEL);
+
+        // final String CHANNELS_SELECT_QUERY = "SELECT * FROM " + TABLE_CHANNELS;
         final SQLiteDatabase db = getReadableDatabase();
         final Cursor cursor = db.rawQuery(CHANNELS_SELECT_QUERY, null);
         try {
@@ -239,7 +259,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private long getChannelId(final Channel channel) {
-        if (channel == null){
+        if (channel == null) {
             return DB_FAILED_TRANSACTION;
         }
         long result = DB_FAILED_TRANSACTION;
@@ -288,7 +308,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public ArrayList<Item> getItem(final Channel channel) {
-        if (channel == null){
+        if (channel == null) {
             return null;
         }
         final ArrayList<Item> listItem = new ArrayList<>();
@@ -334,6 +354,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return item;
     }
 
+    public void updateChannelTitle(final long idChannel, final String newTitle) {
+        final SQLiteDatabase db = getWritableDatabase();
+        final ContentValues valuesTitel = new ContentValues();
+        valuesTitel.put(KEY_CHANNEL_TITLE, newTitle);
+        db.update(TABLE_CHANNELS, valuesTitel, KEY_CHANNEL_ID + "=" + idChannel, null);
+
+    }
+
     public void clearDB() {
         final SQLiteDatabase db = getWritableDatabase();
         try {
@@ -344,10 +372,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    private void setItemFromDB(final Cursor cursor, final Item item){
+    public void deleteChannel(final long idChannel) {
+        final SQLiteDatabase db = getWritableDatabase();
+        db.delete(TABLE_CHANNELS, KEY_CHANNEL_ID + "=" + (int)idChannel, null);
+    }
+
+    private void setItemFromDB(final Cursor cursor, final Item item) {
         item.setId(cursor.getLong(cursor.getColumnIndex(KEY_ITEM_ID)));
         final long secTime = cursor.getLong(cursor.getColumnIndex(KEY_ITEM_DATE));
-        //SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH);
         final Date dateRealize = new Date(secTime);
         item.setDate(dateRealize);
         item.setUrl(cursor.getString(cursor.getColumnIndex(KEY_ITEM_URL)));
@@ -359,10 +391,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         item.setImagePath(cursor.getString(cursor.getColumnIndex(KEY_ITEM_IMAGE_PATH)));
     }
 
-    private void setChannelFromDB(final Cursor cursor,final Channel channel){
+    private void setChannelFromDB(final Cursor cursor, final Channel channel) {
         channel.setId(cursor.getLong(cursor.getColumnIndex(KEY_CHANNEL_ID)));
         channel.setDate(new Date(cursor.getLong(cursor.getColumnIndex(KEY_CHANNEL_LAST_DATE_UPDATE))));
         channel.setTitle(cursor.getString(cursor.getColumnIndex(KEY_CHANNEL_TITLE)));
         channel.setUrl(cursor.getString(cursor.getColumnIndex(KEY_CHANNEL_URL)));
+        //channel.setCount(cursor.getInt(cursor.getColumnIndex(KEY_COUNT_CHANNEL_ITEMS)));
+        channel.setCount(cursor.getInt(4));
     }
 }

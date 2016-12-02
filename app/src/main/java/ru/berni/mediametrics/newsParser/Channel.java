@@ -9,25 +9,34 @@ public class Channel implements RssEntity {
     private final StringContent title;
     private String url;
     private String description;
+    private int count = 0;
     private Date date;
     private long id;
 
-    public Channel(){
+    public Channel() {
         title = new StringContent();
         url = null;
         description = null;
         date = new Date();
     }
 
-    void addItem(final Item item){
+    public void setCount(final int count) {
+        this.count = count;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    void addItem(final Item item) {
         listItem.add(item);
     }
 
-    public ArrayList<Item> getListItem(){
+    public ArrayList<Item> getListItem() {
         return listItem;
     }
 
-    public void setListItem(final ArrayList<Item> items){
+    public void setListItem(final ArrayList<Item> items) {
         listItem = items;
     }
 
@@ -36,7 +45,9 @@ public class Channel implements RssEntity {
         this.url = url;
     }
 
-    public String getUrl() {return url;}
+    public String getUrl() {
+        return url;
+    }
 
     @Override
     public void setDescription(final String description) {
@@ -48,19 +59,23 @@ public class Channel implements RssEntity {
         this.date = date;
     }
 
-    public Date getDate() {return date;}
+    public Date getDate() {
+        return date;
+    }
 
     public void setTitle(final String title) {
         this.title.setContent(title);
     }
 
-    public String getTitle(){
+    public String getTitle() {
         return title.getContent();
     }
 
-    public void setId(final long id) {this.id = id;}
+    public void setId(final long id) {
+        this.id = id;
+    }
 
-    public long getId(){
+    public long getId() {
         return id;
     }
 

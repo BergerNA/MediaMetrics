@@ -1,13 +1,18 @@
 package ru.berni.mediametrics.activity;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.Html;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.webkit.WebSettings;
@@ -40,6 +45,7 @@ public class ActivityItemView extends Activity {
     private final static String CONTENT_TYPE = "text/html";
 
     private final static int START_SCROLL_VALUE = 0;
+    private final static int START_SCROLL_VALUE_1 = 1;
     private final static int FAILED_DB_VALUE = -1;
     private int scrollToY = START_SCROLL_VALUE;
 
@@ -52,27 +58,12 @@ public class ActivityItemView extends Activity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_view);
-        scrollView = (ScrollView) findViewById(R.id.ScrollView);
+        scrollView = (ScrollView) findViewById(R.id.item_ScrollView);
         getExtra(getIntent());
         if (savedInstanceState != null && savedInstanceState.containsKey(KEY_SCROLL_Y)) {
             scrollToY = savedInstanceState.getInt(KEY_SCROLL_Y, START_SCROLL_VALUE);
+            itemId = savedInstanceState.getLong(EXTRA_MESSAGE_ID, itemId);
         }
-
-        final Button buttonNext = (Button) findViewById(R.id.item_button_next);
-        buttonNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                buttonNext();
-            }
-        });
-
-        final Button buttonPrev = (Button) findViewById(R.id.item_button_prev);
-        buttonPrev.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                buttonPrev();
-            }
-        });
 
         final Button buttonItemUrlOnBrowser = (Button) findViewById(R.id.item_button_url);
         buttonItemUrlOnBrowser.setOnClickListener(new View.OnClickListener() {
@@ -81,6 +72,51 @@ public class ActivityItemView extends Activity {
                 buttonItemUrl();
             }
         });
+
+        final GestureDetector gdt = new GestureDetector(new GestureListener());
+        final ScrollView scrollView = (ScrollView) findViewById(R.id.item_ScrollView);
+        final WebView content = (WebView) findViewById(R.id.item_webView_content);
+        content.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch( final View v, final MotionEvent event) {
+                gdt.onTouchEvent(event);
+                return false;
+            }
+        });
+        scrollView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(final View view, final MotionEvent event) {
+                gdt.onTouchEvent(event);
+                return false;
+            }
+        });
+    }
+
+    private static final int SWIPE_MIN_DISTANCE = 100;
+    private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+
+    private class GestureListener extends GestureDetector.SimpleOnGestureListener {
+        @Override
+        public boolean onScroll(final MotionEvent e1, final MotionEvent e2, final float distanceX, final float distanceY) {
+            try {
+                return Math.abs(distanceY) > Math.abs(distanceX);
+            } catch (final Exception ignored) {
+                // nothing
+            }
+            return false;
+        }
+
+        @Override
+        public boolean onFling(final MotionEvent e1, final MotionEvent e2, final float velocityX, final float velocityY) {
+            if(e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+                buttonNext();
+                return true;
+            }  else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+                buttonPrev();
+                return true;
+            }
+            return false;
+        }
     }
 
     @Override
@@ -100,11 +136,17 @@ public class ActivityItemView extends Activity {
             description.setText(Html.fromHtml(item.getDescription()));
 
             final WebView content = (WebView) findViewById(R.id.item_webView_content);
-            content.getSettings().setBuiltInZoomControls(true);
-            content.getSettings().setDisplayZoomControls(false);
-            content.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
-            content.getSettings().setJavaScriptEnabled(true);
-            content.loadDataWithBaseURL(null, HTML_IMAGE_WIDTH_SETTINGS + item.getContent(), CONTENT_TYPE, CHARSET, null);
+            if(! item.getContent().equals("")) {
+                content.setEnabled(true);
+                content.getSettings().setBuiltInZoomControls(false);
+                content.getSettings().setDisplayZoomControls(false);
+                content.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+                content.getSettings().setJavaScriptEnabled(true);
+                content.setHorizontalScrollBarEnabled(false);
+                content.loadDataWithBaseURL(null, HTML_IMAGE_WIDTH_SETTINGS + item.getContent(), CONTENT_TYPE, CHARSET, null);
+            } else{
+                content.setEnabled(false);
+            }
 
             url = item.getUrl();
 
@@ -129,6 +171,7 @@ public class ActivityItemView extends Activity {
     protected void onSaveInstanceState(@NonNull final Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(KEY_SCROLL_Y, scrollView.getScrollY());
+        outState.putLong(EXTRA_MESSAGE_ID, itemId);
     }
 
     private void buttonNext() {
@@ -141,6 +184,7 @@ public class ActivityItemView extends Activity {
                 } else {
                     itemId = listItemId[num];
                 }
+                scrollToY = START_SCROLL_VALUE_1;
                 onStart();
                 break;
             }
@@ -158,6 +202,7 @@ public class ActivityItemView extends Activity {
                     num -= 2;
                     itemId = listItemId[num];
                 }
+                scrollToY = START_SCROLL_VALUE_1;
                 onStart();
                 break;
             }
@@ -174,7 +219,7 @@ public class ActivityItemView extends Activity {
             Toast.makeText(getApplicationContext(), R.string.itemView_openUrl_ErrorUrl, Toast.LENGTH_LONG).show();
         } catch (final ActivityNotFoundException exc) {
             Log.e(LOG_TAG, "Error when try open News link in other activity.");
-            Toast.makeText(getApplicationContext(), R.string.itemView_openUrl_ErrorBrowser, Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), R.string.itemView_openUrl_ErrorBrowser, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -196,3 +241,4 @@ public class ActivityItemView extends Activity {
         listItemId = intent.getLongArrayExtra(EXTRA_MESSAGE_ARRAY_ID);
     }
 }
+

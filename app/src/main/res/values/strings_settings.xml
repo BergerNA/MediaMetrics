@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="array_theme">
+        <item>Стандартная</item>
+        <item>Красная</item>
+    </string-array>
+
+    <string-array name="array_language">
+        <item>Русский</item>
+        <item>English</item>
+        <item>English1</item>
+    </string-array>
+
+    <string-array name="array_period">
+        <item>1 минута</item>
+        <item>10 минут</item>
+        <item>30 минут</item>
+        <item>1 час</item>
+        <item>3 часа</item>
+        <item>6 часов</item>
+        <item>12 часов</item>
+        <item>1 день</item>
+        <item>Выключено</item>
+    </string-array>
+
+    <integer-array name="array_period_minutes">
+        <item>1</item>
+        <item>10</item>
+        <item>30</item>
+        <item>60</item>
+        <item>180</item>
+        <item>360</item>
+        <item>720</item>
+        <item>1440</item>
+        <item>-1</item>
+    </integer-array>
+
+    <string name="setting_setting">Оформление</string>
+    <string name="setting_setting_theme">Светлая тема</string>
+    <string name="setting_setting_theme_dsc">Использовать светлую тему приложения</string>
+    <string name="setting_setting_language">Язык</string>
+    <string name="setting_setting_language_dsc">Изменить язык приложения</string>
+
+    <string name="setting_internet">Синхронизация</string>
+    <string name="setting_internet_period">Интервал автоматической синхронизации</string>
+    <string name="setting_internet_period_key">sync_period</string>>
+    <string name="setting_internet_period_dsc">Через какой промежуток времени
+    автоматически синхронизировать последние новости</string>
+    <string name="setting_internet_wifi">Синхронизация по Wi-Fi</string>
+    <string name="setting_internet_wifi_dsc">Производить синхронизацию только по Wi-Fi</string>
+
+    <string name="setting_program">Прочее</string>
+    <string name="setting_program_about">MediaMetrics</string>
+    <string name="setting_program_about_dsc">О приложении</string>
+
+    <string name="program_about">Приложение MediaMetrics v1.0</string>
+
+
+</resources>

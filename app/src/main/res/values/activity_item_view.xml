@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="activity_itemView_text_title_size">24sp</dimen>
+    <color name="activity_itemView_text_title_color">@color/textColor</color>
+    <dimen name="activity_itemView_text_title_padding_top">10dp</dimen>
+    <dimen name="activity_itemView_text_title_padding_left">15dp</dimen>
+    <dimen name="activity_itemView_text_title_padding_right">@dimen/activity_itemView_text_title_padding_left</dimen>
+    <dimen name="activity_itemView_text_title_padding_bottom">10dp</dimen>
+
+    <dimen name="activity_itemView_text_date_size">14sp</dimen>
+    <color name="activity_itemView_text_date_size_color">@color/textColorDarkGray</color>
+    <dimen name="activity_itemView_text_date_size_padding_top">5dp</dimen>
+    <dimen name="activity_itemView_text_date_size_padding_left">20dp</dimen>
+    <dimen name="activity_itemView_text_date_size_padding_right">@dimen/activity_itemView_text_date_size_padding_left</dimen>
+    <dimen name="activity_itemView_text_date_size_padding_bottom">5dp</dimen>
+
+    <dimen name="activity_itemView_text_description_size">18sp</dimen>
+    <color name="activity_itemView_text_description_color">@color/textColorGray</color>
+    <dimen name="activity_itemView_text_description_padding_top">5dp</dimen>
+    <dimen name="activity_itemView_text_description_padding_left">10dp</dimen>
+    <dimen name="activity_itemView_text_description_padding_right">@dimen/activity_itemView_text_description_padding_left</dimen>
+    <dimen name="activity_itemView_text_description_padding_bottom">5dp</dimen>
+
+    <dimen name="activity_itemView_text_buttonLink_size">16sp</dimen>
+    <color name="activity_itemView_text_buttonLink_color">@color/textColorLink</color>
+    <dimen name="activity_itemView_text_buttonLink_padding_top">5dp</dimen>
+    <dimen name="activity_itemView_text_buttonLink_padding_right">100dp</dimen>
+
+    <dimen name="activity_itemView_delimiter_height">1sp</dimen>
+    <color name="activity_itemView_delimiter_color">@color/colorPrimary</color>
+    <dimen name="activity_itemView_delimiter_margin_left">15dp</dimen>
+    <dimen name="activity_itemView_delimiter_margin_right">@dimen/activity_itemView_delimiter_margin_left</dimen>
+</resources>
